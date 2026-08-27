@@ -1,0 +1,136 @@
+<Prefab>
+  <Parameters>
+    <Parameter Name="GridDataSource" DefaultValue="GridDataSource" />
+  </Parameters>
+  <Constants>
+  </Constants>
+  <Variables>
+  </Variables>
+  <VisualDefinitions>
+  </VisualDefinitions>
+  <Window>
+    <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+      <Children>
+
+        <ListPanel Id="Layout1" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" StackLayout.LayoutMethod="VerticalBottomToTop">
+          <Children>
+
+            <ListPanel Id="Layout2" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" StackLayout.LayoutMethod="HorizontalLeftToRight">
+              <Children>
+
+                <ScrollablePanel Id="ScrollablePanel" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Left" VerticalAlignment="Top" AutoHideScrollBars="true" ClipRect="ClipRect" InnerPanel="ClipRect\GridWidget" VerticalScrollbar="..\VerticalScrollbar">
+                  <Children>
+
+                    <!--Cards Panel-->
+                    <NavigationScopeTargeter ScopeID="PieceGridScope" ScopeParent="..\ClipRect" ScopeMovements="Horizontal" AlternateScopeMovements="Vertical" AlternateMovementStepSize="4" />
+                    <Widget DataSource="*GridDataSource" Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true">
+                      <Children>
+                        
+                        <NavigatableGridWidget Id="GridWidget" DataSource="{Pieces}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" VerticalAlignment="Top" ColumnCount="4" DefaultCellHeight="100" DefaultCellWidth="140">
+                          <ItemTemplate>
+
+                            <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="150" SuggestedHeight="116" HorizontalAlignment="Center" VerticalAlignment="Center" IsHidden="@IsFilteredOut" DoNotUseCustomScaleAndChildren="true" ExtendCursorAreaLeft="-13" ExtendCursorAreaRight="-13" ExtendCursorAreaTop="-13" ExtendCursorAreaBottom="-13">
+                              <Children>
+                                
+                                <!--PlayerHasPiece-->
+                                <ButtonWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" DoNotPassEventsToChildren="true" Command.Click="ExecuteSelect" UpdateChildrenStates="true" IsSelected="@IsSelected">
+                                  <Children>
+                                    <CraftingPieceItemButtonWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" DoNotPassEventsToChildren="true" PlayerHasPiece="@PlayerHasPiece" DontHavePieceBrush="Crafting.Piece.Card.DontHavePiece" HasPieceBrush="Crafting.Piece.Card.HavePiece" UpdateChildrenStates="true" ImageIdentifier="ImageIdentifier" DontHavePieceMaterialBrush="Crafting.Piece.MaterialBrush.DontHavePiece" HasPieceMaterialBrush="Crafting.Piece.MaterialBrush.HavePiece">
+                                      <Children>
+                                        <ImageIdentifierWidget Id="ImageIdentifier" DataSource="{ImageIdentifier}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="98" SuggestedHeight="76" HorizontalAlignment="Center" VerticalAlignment="Center" AdditionalArgs="@AdditionalArgs" ImageId="@Id" TextureProviderName="@TextureProviderName"/>
+                                        <!-- Empty Piece Icon -->
+                                        <BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="55" SuggestedHeight="55" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="Crafting.Piece.Empty" ColorFactor="1.2" IsVisible="@IsEmpty"/>
+                                        <!-- Locked Icon -->
+                                        <BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="20" SuggestedHeight="20" HorizontalAlignment="Left" VerticalAlignment="Bottom" MarginLeft="23" MarginBottom="24" Brush="Crafting.Piece.Lock.Icon" IsHidden="@PlayerHasPiece"/>
+                                        <!-- Tier Text -->
+                                        <TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginTop="23" MarginLeft="25" Brush="Crafting.Card.Tier.Text" Text="@TierText" />
+                                        <!-- Flag Icons -->
+                                        <ListPanel DataSource="{ItemAttributeIcons}" WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="25" HorizontalAlignment="Right" VerticalAlignment="Bottom" MarginRight="22" MarginBottom="19" StackLayout.LayoutMethod="HorizontalRightToLeft">
+                                          <ItemTemplate>
+                                            <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="18" SuggestedHeight="18" IsVisible="@IsDisplayed" Sprite="@IconPath" />
+                                          </ItemTemplate>
+                                        </ListPanel>
+                                        <CraftingCardHighlightBrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" UpdateChildrenStates="true" Brush="Crafting.Piece.Card.NewlyUnlocked.Overlay" MarginTop="18" MarginBottom="18" MarginLeft="18" MarginRight="18" IsVisible="@IsNewlyUnlocked">
+                                          <Children>
+                                            <CraftingCardHighlightBrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="15" SuggestedHeight="15" VerticalAlignment="Top" HorizontalAlignment="Right" MarginTop="5" MarginRight="5" Brush="Crafting.Piece.Card.NewlyUnlocked.Dot" />
+                                          </Children>
+                                        </CraftingCardHighlightBrushWidget>
+                                      </Children>
+                                    </CraftingPieceItemButtonWidget>
+                                    <HintWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteOpenTooltip" Command.HoverEnd="ExecuteCloseTooltip" IsDisabled="true"/>
+                                  </Children>
+                                </ButtonWidget>
+
+                                <HintWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteOpenTooltip" Command.HoverEnd="ExecuteCloseTooltip" IsDisabled="true"/>
+
+                              </Children>
+                            </Widget>
+
+                          </ItemTemplate>
+                        </NavigatableGridWidget>
+                        
+                      </Children>
+                    </Widget>
+
+                    <!--Scroll Gradient-->
+                    <Widget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="580" SuggestedHeight="57" HorizontalAlignment="Right" VerticalAlignment="Bottom" Sprite="General\CharacterCreation\character_creation_scroll_gradient" AlphaFactor="0.75" />
+                    <Widget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="580" SuggestedHeight="57" HorizontalAlignment="Right" VerticalAlignment="Top" VerticalFlip="true" Sprite="General\CharacterCreation\character_creation_scroll_gradient" AlphaFactor="0.75" />
+                  </Children>
+                </ScrollablePanel>
+
+                <ScrollbarWidget Id="VerticalScrollbar" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="8" HorizontalAlignment="Right" VerticalAlignment="Center" MarginTop="0" MarginBottom="0" AlignmentAxis="Vertical" Handle="VerticalScrollbarHandle" MaxValue="100" MinValue="0">
+                  <Children>
+                    <Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Center" Sprite="BlankWhiteSquare_9" AlphaFactor="0.2" Color="#5a4033FF" />
+                    <ImageWidget Id="VerticalScrollbarHandle" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="8" SuggestedHeight="10" HorizontalAlignment="Center" Brush="FaceGen.Scrollbar.Handle" />
+                  </Children>
+                </ScrollbarWidget>
+
+              </Children>
+            </ListPanel>
+
+            <!--Divider-->
+            <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="8" MarginBottom="7" Sprite="General\CharacterCreation\stone_divider_thin" ExtendBottom="22" ExtendLeft="2" ExtendRight="3" ExtendTop="22" PositionXOffset="-6" />
+
+            <!-- Attributes List -->
+            <ListPanel DataSource="{WeaponFlagIconsList}" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" MarginLeft="10" MarginRight="10" StackLayout.LayoutMethod="HorizontalCentered">
+              <ItemTemplate>
+                  <RichTextWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="35" SuggestedHeight="35" HorizontalAlignment="Center" Brush.FontSize="45" Text="@Icon" >
+                  <Children>
+                    <HintWidget DataSource="{Hint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+                  </Children>
+                </RichTextWidget>
+              </ItemTemplate>
+            </ListPanel>
+            
+            <!--Size Slider-->
+
+            <NavigationScopeTargeter ScopeID="SizeSliderScope" ScopeParent="..\SizeSlider" ScopeMovements="Horizontal" />
+            <ListPanel Id="SizeSlider" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="50" MarginRight="100" VerticalAlignment="Bottom" HorizontalAlignment="Center" StackLayout.LayoutMethod="HorizontalLeftToRight">
+              <Children>
+
+                <!--Size Label-->
+                <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Left" VerticalAlignment="Center" MarginRight="30" Text="*SizeLabelBinding" Brush="Crafting.Size.Slider.Label"/>
+
+                <!--Size Slider-->
+                <SliderWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="338" SuggestedHeight="42" VerticalAlignment="Center" HorizontalAlignment="Center" Filler="Filler" Handle="SliderHandle" MaxValueInt="10" MinValueInt="-10" ValueInt="*SizeBinding">
+                  <Children>
+                    <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="362" SuggestedHeight="38" HorizontalAlignment="Center" VerticalAlignment="Center" Sprite="SPGeneral\SPOptions\standart_slider_canvas" IsEnabled="false" />
+                    <Widget Id="Filler" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="345" SuggestedHeight="35" VerticalAlignment="Center" Sprite="SPGeneral\SPOptions\standart_slider_fill" ClipContents="true">
+                      <Children>
+                        <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="345" SuggestedHeight="35" HorizontalAlignment="Left" VerticalAlignment="Center" Sprite="SPGeneral\SPOptions\standart_slider_fill" />
+                      </Children>
+                    </Widget>
+                    <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="400" SuggestedHeight="65" HorizontalAlignment="Center" VerticalAlignment="Center" Sprite="SPGeneral\SPOptions\standart_slider_frame" IsEnabled="false" />
+                    <ImageWidget Id="SliderHandle" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="14" SuggestedHeight="38" HorizontalAlignment="Left" VerticalAlignment="Center" Brush="SPOptions.Slider.Handle" DoNotAcceptEvents="true" GamepadNavigationIndex="0"/>
+                  </Children>
+                </SliderWidget>
+
+              </Children>
+            </ListPanel>
+
+          </Children>
+        </ListPanel>
+      </Children>
+    </Widget>
+  </Window>
+</Prefab>

@@ -1,0 +1,214 @@
+<Prefab>
+  <Constants>
+    <Constant Name="Tier.Button.Width" Value="40"/>
+    <Constant Name="Tier.Label.Width" Value="45"/>
+    <Constant Name="AllTiers.Label.Width" Value="45"/>
+    <Constant Name="Tier.Margins" Value="30"/>
+  </Constants>
+  <Variables>
+  </Variables>
+  <VisualDefinitions>
+  </VisualDefinitions>
+  <Window>
+    <Widget Id="CraftingCategoryParent" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+      <Children>
+        <!--Type & Tier Selection-->
+        <ListPanel DataSource="{WeaponDesign}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginLeft="20" StackLayout.LayoutMethod="VerticalTopToBottom">
+          <Children>
+
+            <NavigationScopeTargeter ScopeID="FiltersScope" ScopeParent="..\CraftingFilters" ScopeMovements="Horizontal" />
+            <ListPanel Id="CraftingFilters" WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="45" StackLayout.LayoutMethod="HorizontalLeftToRight" HorizontalAlignment="Center" MarginLeft="0" MarginTop="4" >
+              <Children>
+
+                <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="65" SuggestedHeight="40" VerticalAlignment="Center" Command.Click="ExecuteToggleShowOnlyUnlockedPieces" UpdateChildrenStates="true" >
+                  <Children>
+                    <!-- Show Only Unlocked Items -->
+                    <BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Tier.Button.Width" SuggestedHeight="40" Brush="Crafting.Checkbox.Empty.Button" GamepadNavigationIndex="0">
+                      <Children>
+                        <ImageWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Crafting.Checkbox.Full.Button" IsVisible="@ShowOnlyUnlockedPieces" />
+                      </Children>
+                    </BrushWidget>
+                    <ImageWidget Id="ShowOnlyUnlockedPiecesIcon" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" MarginLeft="!Tier.Button.Width" SuggestedWidth="25" SuggestedHeight="25" VerticalAlignment="Center" PositionYOffset="-2" Sprite="StdAssets\lock_opened" />
+                    <HintWidget DataSource="{ShowOnlyUnlockedPiecesHint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+                  </Children>
+                </ButtonWidget>
+
+                <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="9" SuggestedHeight="41" MarginLeft="5" MarginRight="5" Sprite="Crafting\smithing_filters_divider" />
+
+                <NavigatableListPanel DataSource="{TierFilters}" WidthSizePolicy="Fixed" SuggestedWidth="500" HeightSizePolicy="Fixed" SuggestedHeight="40" VerticalAlignment="Center" StackLayout.LayoutMethod="HorizontalSpaced" MinIndex="1">
+                  <ItemTemplate>
+                    <Widget WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="40">
+                      <Children>
+                        <NavigationTargetSwitcher FromTarget="..\." ToTarget="..\Button" />
+                        <ButtonWidget Id="Button" OverrideDefaultStateSwitchingEnabled="false" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="!Tier.Button.Width" Brush="Crafting.Checkbox.Empty.Button" Command.Click="ExecuteSelectTier" IsSelected="@IsSelected" UpdateChildrenStates="true">
+                          <Children>
+                            <ImageWidget Id="Checkbox" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Crafting.Checkbox.Full.Button" IsVisible="@IsSelected" />
+                          </Children>
+                        </ButtonWidget>
+                        <TextWidget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="!Tier.Label.Width" MarginLeft="45" Brush="Crafting.Tier.Text" Text="@TierName" DoNotAcceptEvents="true"/>
+                      </Children>
+                    </Widget>
+                  </ItemTemplate>
+                </NavigatableListPanel>
+
+              </Children>
+            </ListPanel>
+
+            <!-- Current Crafting Details-->
+            <NavigationScopeTargeter ScopeID="CurrentCraftingDetailsScope" ScopeParent="..\CurrentCraftingDetails" ScopeMovements="Horizontal" />
+            <Widget Id="CurrentCraftingDetails" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="32" MarginTop="30" MarginLeft="42" MarginRight="26" MarginBottom="4">
+              <Children>
+
+                <!--Free Build Weapon Type Selection-->
+                <ButtonWidget Id="FreeModeClassSelectionButton" WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" IsVisible="@IsInFreeMode" MinWidth="250" SuggestedHeight="41" VerticalAlignment="Center" HorizontalAlignment="Center" MarginTop="5" Command.Click="ExecuteOpenWeaponClassSelectionPopup" Brush="Crafting.Weapon.Type.Selection.Button" DominantSelectedState="true" UpdateChildrenStates="true" DoNotPassEventsToChildren="true" GamepadNavigationIndex="0">
+                  <Children>
+                    <ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                      <Children>
+                        <TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" VerticalAlignment="Center" HorizontalAlignment="Center" MarginLeft="10" Text="@CurrentCraftedWeaponTypeText" Brush="Crafting.WeaponType.Text" Brush.FontSize="24" Brush.TextVerticalAlignment="Center" />
+                        <CraftingWeaponTypeIconWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="36" SuggestedHeight="36" HorizontalAlignment="Center" VerticalAlignment="Center" MarginLeft="8" MarginRight="5" MarginBottom="3" WeaponType="@CurrentCraftedWeaponTemplateId" Color="#F3E1C4FF"/>
+                      </Children>
+                    </ListPanel>
+                  </Children>
+                </ButtonWidget>
+
+                <!-- Order Selection Button-->
+                <ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" StackLayout.LayoutMethod="HorizontalLeftToRight" IsVisible="@IsInOrderMode">
+                  <Children>
+                    <ImageIdentifierWidget DataSource="{ActiveCraftingOrder\OrderOwnerData\ImageIdentifier}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" VerticalAlignment="Center" SuggestedWidth="53" SuggestedHeight="41" MarginRight="5" AdditionalArgs="@AdditionalArgs" ImageId="@Id" TextureProviderName="@TextureProviderName" Command.HoverBegin="..\..\..\ExecuteBeginHeroHint" Command.HoverEnd="..\..\..\ExecuteEndHeroHint" />
+
+                    <Widget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" VerticalAlignment="Center" HorizontalAlignment="Center" MarginTop="5">
+                      <Children>
+                        <ButtonWidget Id="OrderSelectionButton" WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" MinWidth="250" SuggestedHeight="41" Command.Click="ExecuteOpenOrderPopup" Brush="Crafting.Weapon.Type.Selection.Button" DominantSelectedState="true" UpdateChildrenStates="true" DoNotPassEventsToChildren="true" GamepadNavigationIndex="0">
+                          <Children>
+                            <ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                              <Children>
+                                <TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" Text="@CurrentCraftedWeaponTypeText" VerticalAlignment="Center" MarginLeft="10" Brush="Crafting.WeaponType.Text" Brush.TextVerticalAlignment="Center" Brush.FontSize="24" />
+                                <CraftingWeaponTypeIconWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="36" SuggestedHeight="36" VerticalAlignment="Center" HorizontalAlignment="Center" MarginLeft="8" MarginRight="5" MarginBottom="3" WeaponType="@CurrentCraftedWeaponTemplateId" Color="#F3E1C4FF"/>
+                                <QuestMarkerBrushWidget DoNotAcceptEvents="true" DataSource="{CraftingOrderPopup}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="27" VerticalAlignment="Center" QuestMarkerType="@QuestType" Brush="GameMenu.QuestMarker" MarginRight="10" />
+                                <!--<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" MarginLeft="4" MarginRight="4" SuggestedWidth="7" SuggestedHeight="32" VerticalAlignment="Center" Sprite="Crafting\smithing_filters_divider" />-->
+                              </Children>
+                            </ListPanel>
+                          </Children>
+                        </ButtonWidget>
+                      </Children>
+                    </Widget>
+
+
+                    <TextWidget DataSource="{ActiveCraftingOrder}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" VerticalAlignment="Center" MarginLeft="10" IntText="@OrderPrice" Brush="Crafting.Order.Price.Value" Brush.TextHorizontalAlignment="Left" />
+                    <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="25" SuggestedHeight="25" VerticalAlignment="Center" Sprite="General\Icons\Coin@2x"/>
+
+                  </Children>
+                </ListPanel>
+
+              </Children>
+            </Widget>
+
+            <!-- Order - Category Buttons -->
+            <NavigationScopeTargeter ScopeID="ModeSelectionScope" ScopeParent="..\ModeSelection" LeftNavigationScope="None" ScopeMovements="Horizontal" />
+            <Widget Id="ModeSelection" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="10">
+              <Children>
+
+                <!-- Select Order -->
+                <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="269" SuggestedHeight="41" VerticalAlignment="Center" HorizontalAlignment="Left" MarginLeft="55" >
+                  <Children>
+                    <HintWidget DataSource="{OrderDisabledReasonHint}" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint"/>
+                    <ButtonWidget Id="CraftingOrdersButton" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="269" SuggestedHeight="41" VerticalAlignment="Center" HorizontalAlignment="Center" Command.Click="ExecuteOpenOrdersTab" Brush="Crafting.Order.CraftingModeButton" IsSelected="@IsInOrderMode" IsEnabled="@IsOrderButtonActive" DominantSelectedState="true" UpdateChildrenStates="true" DoNotPassEventsToChildren="true" GamepadNavigationIndex="0">
+                      <Children>
+                        <ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                          <Children>
+                            <TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginTop="5" MarginBottom="3" MarginLeft="3" MarginRight="3" Text="@ChooseOrderText" Brush="Crafting.Mode.Selection.Text" />
+                            <Widget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" VerticalAlignment="Center" IsHidden="@IsInOrderMode" >
+                              <Children>
+                                <QuestMarkerBrushWidget DataSource="{CraftingOrderPopup}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="27" QuestMarkerType="@QuestType" Brush="GameMenu.QuestMarker" />
+                              </Children>
+                            </Widget>
+                          </Children>
+                        </ListPanel>
+                      </Children>
+                    </ButtonWidget>
+                  </Children>
+                </Widget>
+
+                <!-- Select Free Mode & Weapon Category -->
+                <ButtonWidget Id="CraftingFreeModeButton" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="269" SuggestedHeight="41" VerticalAlignment="Center" HorizontalAlignment="Right" MarginRight="55" Command.Click="ExecuteOpenFreeBuildTab" Brush="Crafting.Order.CraftingModeButton" IsSelected="@IsInFreeMode" DominantSelectedState="true" UpdateChildrenStates="true" DoNotPassEventsToChildren="true" GamepadNavigationIndex="1">
+                  <Children>
+                    <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="5" MarginBottom="3" MarginLeft="3" MarginRight="3" Text="@ChooseWeaponTypeText" Brush="Crafting.Mode.Selection.Text" />
+                  </Children>
+                </ButtonWidget>
+
+              </Children>
+            </Widget>
+
+          </Children>
+        </ListPanel>
+
+        <!--Inner Panel-->
+        <Widget DataSource="{WeaponDesign}" Id="InnerPanel" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="573" SuggestedHeight="735" HorizontalAlignment="Center" VerticalAlignment="Center" PositionXOffset="23">
+          <Children>
+
+            <!--Top Gradient Shadow-->
+            <Widget DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" Sprite="Crafting\drop_shadow_top" />
+
+            <ListPanel Id="PieceListParent" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="5" StackLayout.LayoutMethod="VerticalBottomToTop">
+              <Children>
+                <!--Pieces Box-->
+                <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="400">
+                  <Children>
+                    <CraftingPieceGrid Parameter.GridDataSource="{ActivePieceList}" Parameter.SizeBinding="@ActivePieceSize" Parameter.SizeLabelBinding="@ComponentSizeLbl"/>
+                  </Children>
+                </Widget>
+
+                <!--Properties Container Box-->
+                <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" StackLayout.LayoutMethod="VerticalBottomToTop">
+                  <Children>
+
+                    <NavigationScopeTargeter ScopeID="UsageSelectorScope" ScopeParent="..\UsageSelectorGrid" ScopeMovements="Horizontal" AlternateScopeMovements="Vertical" AlternateMovementStepSize="3" />
+                    <NavigatableGridWidget Id="UsageSelectorGrid" DataSource="{SecondaryUsageSelector\ItemList}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Top" ColumnCount="3" DefaultCellHeight="35" DefaultCellWidth="152" >
+                      <ItemTemplate>
+
+                        <ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="35" SuggestedWidth="150" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="Crafting.Tooltip.WeaponAlternativeUsageButton" IsSelected="@IsSelected" ButtonType="Radio" Command.Click="ExecuteSelect" DoNotUseCustomScaleAndChildren="true">
+                          <Children>
+                            <TextWidget DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" MarginTop="3" MarginRight="3" MarginLeft="3" MarginBottom="3" Brush="InventoryDefaultFontBrush" Brush.FontSize="16" Brush.TextHorizontalAlignment="Center" Text="@StringItem" />
+                          </Children>
+                        </ButtonWidget>
+
+                      </ItemTemplate>
+                    </NavigatableGridWidget>
+
+                    <!-- Property List -->
+                    <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+                      <Children>
+                        <ScrollablePanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" AutoHideScrollBars="true" ClipRect="ClipRect" InnerPanel="ClipRect\PrimaryPropertyList" VerticalScrollbar="..\VerticalScrollbar">
+                          <Children>
+                            <Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true">
+                              <Children>
+                                <!--<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Sprite="BlankWhiteSquare_9" />-->
+                                <CraftingPropertyList WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" Id="PrimaryPropertyList" VerticalAlignment="Top" DataSource="{PrimaryPropertyList}" />
+                              </Children>
+                            </Widget>
+
+                          </Children>
+                        </ScrollablePanel>
+
+                        <ScrollbarWidget Id="VerticalScrollbar" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="8" HorizontalAlignment="Right" VerticalAlignment="Center" MarginTop="0" MarginBottom="0" AlignmentAxis="Vertical" Handle="VerticalScrollbarHandle" MaxValue="100" MinValue="0">
+                          <Children>
+                            <Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Center" Sprite="BlankWhiteSquare_9" AlphaFactor="0.2" Color="#5a4033FF" />
+                            <ImageWidget Id="VerticalScrollbarHandle" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="8" SuggestedHeight="10" HorizontalAlignment="Center" Brush="FaceGen.Scrollbar.Handle" />
+                          </Children>
+                        </ScrollbarWidget>
+                      </Children>
+                    </Widget>
+
+                  </Children>
+                </ListPanel>
+
+              </Children>
+            </ListPanel>
+
+          </Children>
+        </Widget>
+
+      </Children>
+    </Widget>
+  </Window>
+</Prefab>

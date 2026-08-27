@@ -1,0 +1,121 @@
+<Prefab>
+	<Constants>
+    <Constant Name="DoneButton.Height" BrushLayer="Default" BrushName="ButtonBrush1" BrushValueType="Height" />
+    <Constant Name="DoneButton.Width" BrushLayer="Default" BrushName="ButtonBrush1" BrushValueType="Width" />
+    
+    <Constant Name="CancelButton.Height" BrushLayer="Default" BrushName="ButtonBrush3" BrushValueType="Height" />
+    <Constant Name="CancelButton.Width" BrushLayer="Default" BrushName="ButtonBrush3" BrushValueType="Width" />
+    <Constant Name="Standard.DialogCloseButtons.DoneButton.Height" BrushLayer="Default" BrushName="Standard.DialogCloseButtons.DoneButton" BrushValueType="Height" />
+	</Constants>
+	<Variables>
+	</Variables>
+	<VisualDefinitions>
+
+	</VisualDefinitions>
+
+	<Window>
+    <!-- Window Container -->
+    <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+      <Children>
+        <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Sprite="BlankWhiteSquare_9" Color="#000000FF" AlphaFactor="0.6" />
+        
+        <!-- Popup -->
+        <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="490" SuggestedHeight="630" VerticalAlignment="Center" HorizontalAlignment="Center" >
+          <Children>
+            
+            <ImageWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Sprite="StdAssets\Popup\canvas" />
+            <ImageWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Sprite="StdAssets\Popup\canvas_gradient" />
+            <!-- Title -->
+            <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="65" MarginTop="5" Text="@TitleText" Brush="Crafting.History.Title" />
+            
+            <ImageWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="26" MarginTop="65" MarginLeft="-10" MarginRight="-10" Sprite="StdAssets\Popup\divider" />
+            
+            <!-- Inner Panel -->
+            <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Sprite="scrollable_field_9" MarginLeft="16" MarginRight="16" MarginTop="95" MarginBottom="95">
+              <Children>
+                <ScrollablePanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginRight="8" ClipRect="ClipRect" AutoHideScrollBars="true" InnerPanel="ClipRect\ListPanel" VerticalScrollbar="..\VerticalScrollbar">
+                  <Children>
+                    <!-- ClipRect -->
+										<NavigationForcedScopeCollectionTargeter CollectionParent="..\." />
+                    <NavigationScopeTargeter ScopeID="CraftingHistoryPopupScope" ScopeParent="..\ClipRect" ScopeMovements="Vertical" />
+                    <Widget Id="ClipRect" ClipContents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="15" MarginRight="15" MarginTop="15" MarginBottom="15">
+                      <Children>
+                        <!-- List -->
+                        <NavigatableListPanel DataSource="{CraftingHistory}" Id="ListPanel" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop">
+                          <ItemTemplate>
+                            <!-- Card Template -->
+                            <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" MarginTop="3" MarginBottom="3" MarginLeft="3" MarginRight="3" SuggestedHeight="70">
+                              <Children>
+
+                                <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Crafting.History.Tuple" Command.Click="ExecuteSelect" IsSelected="@IsSelected">
+                                  <Children>
+                                    <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                                      <Children>
+
+                                        <!-- Image Identifier-->
+                                        <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="125" SuggestedHeight="60" VerticalAlignment="Center" HorizontalAlignment="Left" MarginLeft="10" Sprite="SPGeneral\SPRecruitment\portrait_cart" ColorFactor="0.45">
+                                          <Children>
+                                            <ImageIdentifierWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" DataSource="{Visual}" AdditionalArgs="@AdditionalArgs" ImageId="@Id" TextureProviderName="@TextureProviderName" />
+                                          </Children>
+                                        </Widget>
+
+                                        <!-- Weapon Name -->
+                                        <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MaxHeight="60" MarginLeft="10" MarginRight="10" VerticalAlignment="Center" Brush="Crafting.History.Tuple.Name" Text="@Name" />
+
+                                        <!-- Type Icon -->
+                                        <CraftingWeaponTypeIconWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" VerticalAlignment="Center" MarginRight="10" WeaponType="@WeaponTypeCode" Color="#FFE09EFF"/>
+
+                                      </Children>
+                                    </ListPanel>
+
+                                    <HintWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" DataSource="{Hint}" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" IsDisabled="true"/>
+                                  </Children>
+                                </ButtonWidget>
+
+                              </Children>
+                            </Widget>
+                          </ItemTemplate>
+                        </NavigatableListPanel>
+                      </Children>
+                    </Widget>
+                  </Children>
+                </ScrollablePanel>
+
+                <ScrollbarWidget Id="VerticalScrollbar" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="6" HorizontalAlignment="Right" VerticalAlignment="Center" MarginRight="8" MarginTop="15" MarginBottom="15" AlignmentAxis="Vertical" Handle="VerticalScrollbarHandle" MaxValue="100" MinValue="0">
+                  <Children>
+                    <Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="3" HorizontalAlignment="Center" Sprite="BlankWhiteSquare_9" AlphaFactor="0.2" Color="#5a4033FF" />
+                    <ImageWidget Id="VerticalScrollbarHandle" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="6" SuggestedHeight="10" HorizontalAlignment="Center" Brush="FaceGen.Scrollbar.Handle" />
+                  </Children>
+                </ScrollbarWidget>
+              </Children>
+            </Widget>
+            
+            <!-- Cancel & Done Buttons-->
+            <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalSpaced" VerticalAlignment="Bottom" MarginBottom="27" MarginLeft="14" MarginRight="14">
+              <Children>
+                <!--Cancel -->
+                <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!CancelButton.Width" SuggestedHeight="!CancelButton.Height" Brush="ButtonBrush3" Command.Click="ExecuteCancel">
+                  <Children>
+                    <InputKeyVisualWidget DataSource="{CancelKey}" DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="48" SuggestedHeight="48" HorizontalAlignment="Left" VerticalAlignment="Center" PositionXOffset="12" KeyID="@KeyID" IsVisible="@IsVisible"/>
+                    <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Text="@CancelText" MarginLeft="7" MarginRight="7" Brush="Crafting.History.Control.Button.Text" />
+                  </Children>
+                </ButtonWidget>
+                <!-- Done -->
+                <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!DoneButton.Width" SuggestedHeight="!DoneButton.Height" Brush="ButtonBrush1" IsEnabled="@IsDoneAvailable" Command.Click="ExecuteDone">
+                  <Children>
+                    <InputKeyVisualWidget DataSource="{DoneKey}" DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="48" SuggestedHeight="48" HorizontalAlignment="Left" VerticalAlignment="Center" PositionXOffset="12" KeyID="@KeyID" IsVisible="@IsVisible"/>
+                    <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Text="@DoneText" MarginLeft="7" MarginRight="7" Brush="Crafting.History.Control.Button.Text" />
+                  </Children>
+                </ButtonWidget>
+              </Children>
+            </ListPanel>
+            
+            <ImageWidget DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="-20" MarginTop="-20" MarginRight="-20" MarginBottom="-20" Sprite="frame_9" />
+
+          </Children>
+        </Widget>
+        
+      </Children>
+    </Widget>
+	</Window>
+</Prefab>

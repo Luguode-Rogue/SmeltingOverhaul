@@ -1,0 +1,57 @@
+<Prefab>
+  <Constants>
+  </Constants>
+  <Variables>
+  </Variables>
+  <VisualDefinitions>
+  </VisualDefinitions>
+  <Window>
+    <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop">
+      <ItemTemplate>
+        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="8" StackLayout.LayoutMethod="HorizontalLeftToRight" MarginRight="14" IsVisible="@IsValidForUsage" DoNotUseCustomScaleAndChildren="true">
+          <Children>
+            <!--Name-->
+            <Widget Id="LabelContainer" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="185">
+              <Children>
+                <TextWidget Id="Label" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MaxWidth="185" Text="@PropertyLbl" Brush="Crafting.Property.Name.Text" HorizontalAlignment="Right" Brush.TextHorizontalAlignment="Right" />
+              </Children>
+            </Widget>
+            
+            <!--Slider-->
+            <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="280" SuggestedHeight="17" HorizontalAlignment="Right" VerticalAlignment="Center"  Sprite="crafting_little_progressbar_frame_9" AlphaFactor="0.5" >
+              <Children>
+                <CraftingItemStatSliderWidget Id="ScrollBar" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="5" MarginRight="5" Filler="Filler" Handle="Handle" TargetFill="TargetFill" IsExceedingBeneficial="@IsExceedingBeneficial" ValueText="..\..\OrderValueWidget\OrderValueText" LabelTextWidget="..\..\LabelContainer\Label" HasValidValue="@HasValidValue" HasValidTarget="@HasValidTarget" IsEnabled="false" MaxValueFloat="@PropertyMaxValue" MinValueFloat="0" ValueFloat="@PropertyValue" TargetValue="@TargetValue">
+                  <Children>
+                    <Widget Id="Filler" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="11" SuggestedHeight="10" MarginTop="1" HorizontalAlignment="Left" VerticalAlignment="Center" Sprite="crafting_little_progressbar_fill_9" ClipContents="true">
+                      <Children>
+                        <Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="78" HorizontalAlignment="Right" VerticalAlignment="Center" MarginLeft="5" MarginRight="1" MarginTop="1" MarginBottom="1"  />
+                      </Children>
+                    </Widget>
+                    <BrushWidget Id="TargetFill" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="11" SuggestedHeight="9" HorizontalAlignment="Left" VerticalAlignment="Center" IsVisible="@HasValidTarget" Brush="Crafting.Property.Slider.FillTarget" />
+                    <Widget Id="Handle" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="1" SuggestedHeight="20" HorizontalAlignment="Left" VerticalAlignment="Center" Sprite="BlankWhiteSquare_9" AlphaFactor="0.45" IsEnabled="@HasValidTarget" IsVisible="@HasValidTarget" />
+                  </Children>
+                </CraftingItemStatSliderWidget>
+              </Children>
+            </Widget>
+            
+            <!-- Free Value -->
+            <TextWidget WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="50" MarginLeft="5" Brush="Crafting.Property.Value.Text" Brush.FontSize="20" Brush.TextHorizontalAlignment="Left" Brush.TextAlphaFactor="0.75" VerticalAlignment="Center" Text="@PropertyValueText" IsHidden="@HasValidTarget" />
+            
+            <!-- Order Value -->
+            <ListPanel Id="OrderValueWidget" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="5" MarginRight="5" StackLayout.LayoutMethod="HorizontalLeftToRight" VerticalAlignment="Center" IsVisible="@HasValidTarget">
+              <Children>
+                <!-- Property Value -->
+                <TextWidget Id="OrderValueText" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MaxWidth="50" Brush="Crafting.Property.Value.Text" Brush.FontSize="20" Brush.TextHorizontalAlignment="Right" Brush.TextAlphaFactor="0.75" Text="@PropertyValueText" />
+                <!-- Separator -->
+                <TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" Text="@SeparatorText" Brush="Crafting.Property.Value.Text" Brush.FontSize="20" Brush.TextHorizontalAlignment="Right" Brush.TextAlphaFactor="0.75"/>
+                <!-- Target Value -->
+                <TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MaxWidth="55" Brush="Crafting.Property.Value.Text" Brush.FontSize="20" Brush.TextHorizontalAlignment="Left" Text="@TargetValueText" Brush.TextAlphaFactor="0.75"/>
+              </Children>
+            </ListPanel>
+
+          </Children>
+        </ListPanel>
+      </ItemTemplate>
+    </ListPanel>
+  </Window>
+</Prefab>

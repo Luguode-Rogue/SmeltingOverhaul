@@ -1,0 +1,208 @@
+<Prefab>
+	<Constants>
+		<Constant Name="Popup.Width" Value="1370" />
+		<Constant Name="Popup.Height" Value="680" />
+		<Constant Name="Card.Width" Value="196" />
+		<Constant Name="Card.Inner.Vertical.Margin" Value="2" />
+		<Constant Name="Card.Inner.Horizontal.Margin" Value="2" />
+	</Constants>
+	<Variables>
+		
+	</Variables>
+	<VisualDefinitions>
+		
+	</VisualDefinitions>
+
+	<Window>
+		<!-- General container -->
+		<Widget Id="CraftingOrderPopup" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+			<Children>
+				<!-- Background Tint -->
+				<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Sprite="BlankWhiteSquare_9" Color="#000000FF" AlphaFactor="0.6" />
+				
+				<!-- Popup Container -->
+				<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Popup.Width" SuggestedHeight="!Popup.Height" VerticalAlignment="Center" HorizontalAlignment="Center">
+					<Children>
+            <!-- Contents Container -->
+						<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="35" MarginRight="35">
+							<Children>
+                <ImageWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Sprite="StdAssets\Popup\order_popup_canvas" />
+								<ImageWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Sprite="StdAssets\Popup\canvas_gradient" />
+								<ImageWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="-20" MarginTop="-20" MarginRight="-20" MarginBottom="-20" Sprite="frame_9" />
+								
+                <!-- Order Count -->
+								<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="45" HorizontalAlignment="Center" MarginTop="10" Text="@OrderCountText" Brush="InventoryHeaderFontBrush" Brush.FontSize="34" />
+
+								<!-- Inner Frame -->								
+								<ScrollablePanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="60" MarginBottom="60" MarginLeft="40" MarginRight="40" HorizontalAlignment="Center" ClipRect="ClipRect" InnerPanel="ClipRect\OrderList" HorizontalScrollbar="HorizontalScrollbar" AutoHideScrollBars="true" Sprite="scrollable_field_9" Color="#FFFFFFFF">
+									<Children>
+										<NavigationForcedScopeCollectionTargeter CollectionParent="..\ClipRect" />
+										<NavigationScopeTargeter ScopeID="OrderPopupScope" ScopeParent="..\ClipRect" ScopeMovements="Horizontal" />
+                    <Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="7" MarginBottom="7" MarginLeft="9" MarginRight="9" ClipContents="true">
+                      <Children>
+                        <ListPanel Id="OrderList" WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" StackLayout.LayoutMethod="VerticalBottomToTop">
+											    <Children>
+                            
+                            <!-- Crafting Orders -->
+												    <NavigatableListPanel Id="OrderList" DataSource="{CraftingOrders}" WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" StackLayout.LayoutMethod="HorizontalLeftToRight">
+													    <ItemTemplate>
+														    <!-- Card Template -->
+                                <Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" DoNotPassEventsToChildren="@IsDisabled" SuggestedWidth="!Card.Width" MarginLeft="5" MarginRight="5" MarginTop="5" MarginBottom="5">
+                                  <Children>
+                                    <CardSelectionPopupButtonWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" DoNotPassEventsToChildren="true" Brush="Crafting.Order.Card" IsEnabled="@IsEnabled" IsSelected="@IsSelected" PropertiesContainer="Content\CardMiddle\PropertiesContainer" Command.Click="ExecuteSelectOrder"  UpdateChildrenStates="true">
+                                      <Children>
+                                        <!-- Gradient -->
+                                        <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="250" VerticalAlignment="Bottom" MarginRight="2" MarginLeft="2" MarginBottom="2" Sprite="scrollable_field_gradient_9"/>
+
+                                        <!-- Content -->
+                                        <ListPanel Id="Content" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="!Card.Inner.Vertical.Margin" MarginBottom="!Card.Inner.Vertical.Margin" MarginLeft="!Card.Inner.Horizontal.Margin" MarginRight="!Card.Inner.Horizontal.Margin" StackLayout.LayoutMethod="VerticalBottomToTop"  UpdateChildrenStates="true">
+                                          <Children>
+																						<!-- Card Top -->
+                                            <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="7" StackLayout.LayoutMethod="VerticalBottomToTop" UpdateChildrenStates="true">
+                                              <Children>
+                                                <!-- Label -->
+                                                <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="48" Brush="Crafting.Order.Card.Header" Text="@OrderWeaponType" />
+
+                                                <ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginTop="15" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                                                  <Children>
+                                                    <!-- Hero Image -->
+                                                    <ImageIdentifierWidget DataSource="{OrderOwnerData\ImageIdentifier}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="68" SuggestedHeight="51" MarginRight="6" HorizontalAlignment="Center" AdditionalArgs="@AdditionalArgs" ImageId="@Id" TextureProviderName="@TextureProviderName">
+                                                      <Children>
+                                                        <ListPanel DataSource="{..\..\Quests}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" VerticalAlignment="Bottom" MarginLeft="5" MarginBottom="5">
+                                                          <ItemTemplate>
+                                                            <QuestMarkerBrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="27" QuestMarkerType="@QuestMarkerType" Brush="GameMenu.QuestMarker" />
+                                                          </ItemTemplate>
+                                                        </ListPanel>
+                                                      </Children>
+                                                    </ImageIdentifierWidget>
+                                                     <!-- Weapon Type Icon -->
+                                                    <CraftingWeaponTypeIconWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="51" SuggestedHeight="51" Color="#FFE09EFF" WeaponType="@OrderWeaponTypeCode" />
+                                                  </Children>
+                                                </ListPanel>
+
+                                                <!-- Hero Name -->
+                                                <TextWidget DataSource="{OrderOwnerData}" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="38" MarginTop="2" MarginBottom="2" Brush="Crafting.Order.Card.Owner.Name" Text="@NameText" />
+
+                                              </Children>
+                                            </ListPanel>
+
+                                            <!-- Divider -->
+                                            <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" MarginLeft="15" MarginRight="15" MarginTop="4" MarginBottom="2" Sprite="BlankWhiteSquare_9" Color="#F09A29FF" />
+
+                                            <!-- Card Middle -->
+                                            <Widget Id="CardMiddle" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="258" MarginLeft="10" MarginRight="10">
+                                              <Children>
+                                                <CircularAutoScrollablePanelWidget Id="PropertiesContainer" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipRect="ClipRect" InnerPanel="ClipRect\CardStats" ScrollType="ByPixels" ScrollPixelsPerSecond="45" IdleTime="1.65" VerticalScrollbar="..\VerticalScrollbar">
+                                                  <Children>
+                                                    
+                                                    <Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true">
+                                                      <Children>
+                                                        <!-- Order Stats -->
+                                                        <ListPanel Id="CardStats" DataSource="{WeaponAttributes}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop">
+                                                          <ItemTemplate>
+                                                            <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren">
+                                                              <Children>
+                                                                <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                                                                  <Children>
+                                                                    <RichTextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" Brush="Crafting.Order.Card.Property.Label" Text="@AttributeFieldText" />
+                                                                  </Children>
+                                                                </ListPanel>
+                                                              </Children>
+                                                            </Widget>
+                                                          </ItemTemplate>
+                                                        </ListPanel>
+                                                      </Children>
+                                                    </Widget>
+
+                                                    <TextWidget Id="DebugText1" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" Brush.FontSize="20" Brush.FontColor="#FFFF00FF"/>
+                                                    <TextWidget Id="DebugText2" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" VerticalAlignment="Bottom" Brush.FontSize="20" Brush.FontColor="#FFFF00FF"/>
+                                                    
+                                                  </Children>
+                                                </CircularAutoScrollablePanelWidget>
+
+                                                <ScrollbarWidget Id="VerticalScrollbar" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Right" VerticalAlignment="Center" MarginRight="-4" MarginTop="5" MarginBottom="5" AlignmentAxis="Vertical" Handle="VerticalScrollbarHandle" MaxValue="100" MinValue="0" IsVisible="false">
+                                                  <Children>
+                                                    <Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="2" HorizontalAlignment="Center" Sprite="BlankWhiteSquare_9" AlphaFactor="0.2" Color="#5a4033FF" />
+                                                    <ImageWidget Id="VerticalScrollbarHandle" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="4" SuggestedHeight="10" HorizontalAlignment="Center" Brush="FaceGen.Scrollbar.Handle" />
+                                                  </Children>
+                                                </ScrollbarWidget>
+
+                                              </Children>
+                                            </Widget>
+
+                                            <!-- Divider -->
+                                            <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" MarginTop="2" MarginBottom="2" MarginLeft="15" MarginRight="15" Sprite="BlankWhiteSquare_9" Color="#F09A29FF" />
+
+                                          </Children>
+                                        </ListPanel>
+
+                                        <!-- Card Bottom-->
+                                        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="50" VerticalAlignment="Bottom" MarginBottom="10" StackLayout.LayoutMethod="VerticalBottomToTop">
+                                          <Children>
+                                            <!--<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Sprite="BlankWhiteSquare_9" />-->
+                                            <ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="16" HorizontalAlignment="Center">
+                                              <Children>
+                                                <RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" Brush="Crafting.Order.Card.Property.Label" Text="@OrderDifficultyLabelText"/>
+                                                <BoolBrushChangerBrushWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" TrueBrush="Crafting.Order.Card.Property.Value.Positive" FalseBrush="Crafting.Order.Card.Property.Value.Negative" BooleanCheck="@IsDifficultySuitableForHero" IncludeChildren="true">
+                                                  <Children>
+                                                    <RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginLeft="5" Text="@OrderDifficultyValueText"/>
+                                                  </Children>
+                                                </BoolBrushChangerBrushWidget>
+                                              </Children>
+                                            </ListPanel>
+                                            <!-- Order Price -->
+                                            <ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="38" MarginLeft="5" MarginTop="5" HorizontalAlignment="Center" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                                              <Children>
+                                                <TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="38" VerticalAlignment="Center" Brush="Crafting.Order.Price.Value" IntText="@OrderPrice"/>
+                                                <ImageWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="24" SuggestedHeight="24" VerticalAlignment="Center" Sprite="General\Icons\Coin@2x" />
+                                              </Children>
+                                            </ListPanel>
+                                          </Children>
+                                        </ListPanel>
+
+                                        <!-- Disable Overlay -->
+                                        <Widget IsHidden="@IsEnabled" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+                                          <Children>
+                                            <Widget  WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Sprite="BlankWhiteSquare_9" IsHidden="@HasAvailableHeroes" Color="#000000A0" SaturationFactor="-80"/>
+                                            <Widget  WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Sprite="BlankWhiteSquare_9" IsVisible="@HasAvailableHeroes" Color="#00000060"/>
+                                          </Children>
+                                        </Widget>
+
+                                      </Children>
+                                    </CardSelectionPopupButtonWidget>
+                                    
+                                    <!-- Hint -->
+                                    <HintWidget DataSource="{DisabledReasonHint}" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="100" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+                                  </Children>
+                                </Widget>
+													    </ItemTemplate>
+												    </NavigatableListPanel>
+                        
+                          </Children>
+										    </ListPanel>                      
+                      </Children>
+                    </Widget>
+                  
+                    <!-- Scrollbar -->
+								    <ScrollbarWidget Id="HorizontalScrollbar" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="6" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginLeft="15" MarginRight="15" MarginBottom="5" AlignmentAxis="Horizontal" Handle="HorizontalScrollbarHandle" MaxValue="100" MinValue="0">
+									    <Children>
+										    <Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="6" HorizontalAlignment="Center" Sprite="BlankWhiteSquare_9" AlphaFactor="0.2" Color="#5a4033FF" />
+										    <ImageWidget Id="HorizontalScrollbarHandle" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="10" MarginTop="1" MarginBottom="1" HorizontalAlignment="Center" Brush="FaceGen.Scrollbar.Handle" />
+									    </Children>
+								    </ScrollbarWidget>
+                
+									</Children>                
+								</ScrollablePanel>
+								
+              </Children>
+						</Widget>
+
+            <!-- Close Button -->
+            <ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="70" SuggestedHeight="70" HorizontalAlignment="Right" VerticalAlignment="Top" Brush="Popup.CloseButton" Command.Click="ExecuteCloseWithoutSelection" />
+          </Children>
+				</Widget>
+        
+			</Children>
+		</Widget>
+	</Window>
+</Prefab>
