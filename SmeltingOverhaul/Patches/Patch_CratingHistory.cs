@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +41,7 @@ namespace SmeltingOverhaul.Patches
 
             if (_historyListField == null)
             {
-                Debug.Print("[CraftingHistoryPatch] 错误：无法反射获取 _cratingItemsHistory", 0, Debug.DebugColor.Red);
+                /* 此代码看不到log：Debug.Print 不会写入可查看的日志文件，已禁用。 */;
                 return true;
             }
 
@@ -62,7 +62,7 @@ namespace SmeltingOverhaul.Patches
                 {
                     if (AreDesignsIdentical(newDesign, historyItem.WeaponDesign))
                     {
-                        Debug.Print($"[CraftingHistoryPatch] 发现重复设计: {craftedObject.Name.ToString()}，跳过添加。", 0, Debug.DebugColor.Cyan);
+                        /* 此代码看不到log：Debug.Print 不会写入可查看的日志文件，已禁用。 */;
                         return false; // 阻止原版执行
                     }
                 }
@@ -74,19 +74,19 @@ namespace SmeltingOverhaul.Patches
             if (historyList.Count < MAX_HISTORY_SIZE)
             {
                 historyList.Add(craftedObject);
-                Debug.Print($"[CraftingHistoryPatch] 添加新设计 (当前数量: {historyList.Count}/{MAX_HISTORY_SIZE})", 0, Debug.DebugColor.Green);
+                /* 此代码看不到log：Debug.Print 不会写入可查看的日志文件，已禁用。 */;
                 return false; // 阻止原版执行，因为我们已经手动添加了
             }
 
             // 情况 B: 列表已满 (30个)，需要移除一个旧的才能添加新的
             if (HandleFullHistory(historyList, craftedObject))
             {
-                Debug.Print($"[CraftingHistoryPatch] 列表已满，已替换旧记录并添加新设计。", 0, Debug.DebugColor.Green);
+                /* 此代码看不到log：Debug.Print 不会写入可查看的日志文件，已禁用。 */;
                 return false; // 阻止原版执行
             }
             else
             {
-                Debug.Print($"[CraftingHistoryPatch] 列表已满且无法安全移除任何记录（会丢失武器类型），新设计未添加。", 0, Debug.DebugColor.Yellow);
+                /* 此代码看不到log：Debug.Print 不会写入可查看的日志文件，已禁用。 */;
                 return false; // 阻止原版执行，且不添加
             }
         }
@@ -120,7 +120,7 @@ namespace SmeltingOverhaul.Patches
                 {
                     historyList.RemoveAt(i);
                     historyList.Add(newItem);
-                    Debug.Print($"[CraftingHistoryPatch] 移除了同类型的旧记录 ({oldItem.Name})，添加了新记录。", 0, Debug.DebugColor.White);
+                    /* 此代码看不到log：Debug.Print 不会写入可查看的日志文件，已禁用。 */;
                     return true;
                 }
 
@@ -130,7 +130,7 @@ namespace SmeltingOverhaul.Patches
                     // 如果不唯一（即移除后还有别的），则可以安全移除
                     historyList.RemoveAt(i);
                     historyList.Add(newItem);
-                    Debug.Print($"[CraftingHistoryPatch] 移除了非唯一的旧记录 ({oldItem.Name}, 类型:{oldWeaponClass})，添加了新记录。", 0, Debug.DebugColor.White);
+                    /* 此代码看不到log：Debug.Print 不会写入可查看的日志文件，已禁用。 */;
                     return true;
                 }
 
